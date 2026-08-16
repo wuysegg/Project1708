@@ -1,257 +1,309 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, html {
+    width: 100%; height: 100%; overflow: hidden;
+    font-family: sans-serif;
+    
+    /* 1. Nền Gradient bầu trời đêm tĩnh lặng */
+    background: linear-gradient(45deg, #010113, #0a0b2a, #030315, #080820);
+    
+    /* 2. Cài đặt kích thước lớn hơn để tạo không gian cho hiệu ứng di chuyển */
+    background-size: 400% 400%;
+    
+    /* 3. Chạy hiệu ứng chuyển màu nhè nhẹ vô tận */
+    animation: nightBreeze 15s ease infinite;
+}
+
+/* Thêm đoạn keyframes này ngay bên dưới để tạo chuyển động cho nền */
+@keyframes nightBreeze {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- MÀN HÌNH KHỞI ĐỘNG TRẮNG BÓC --- */
+#startup-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #ffffff; z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+}
+
+#start-btn {
+    padding: 15px 30px; font-family: 'Pixelify Sans', monospace;
+    font-size: 1.2rem; background: #ff94b9; color: white;
+    border: none; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 148, 185, 0.4);
+    transition: transform 0.2s;
+}
+#start-btn:active { transform: scale(0.95); }
+
+#time-counter {
+    font-family: 'Dancing Script', cursive; 
+    font-size: 3.5rem; 
+    color: #f4ecd8; /* Chữ màu giấy vintage sáng */
+    text-align: center; 
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Thêm chút hào quang */
+    padding: 20px;
+    white-space: nowrap; 
+}
+
+/* --- GIAO DIỆN CHÍNH --- */
 #welcome-screen {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #ffdeeb 0%, #fff0f3 100%);
+    width: 100%; height: 100%; display: flex;
+    justify-content: center; align-items: center;
 }
 
-.content-wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0px;
-}
-#pass-input{
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 2px solid #ff80ab;
-    outline: none;
-    font-family: 'Pixelify Sans', monospace;
-    text-align: center;
-    -webkit-text-security: asterisk;
-    -moz-text-security: asterisk;
-    text-security: asterisk;
-}
-/* Layout bàn phím số */
-.numpad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-width: 240px;
-    margin: 15px auto;
+.content-wrapper {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0px; width: 90%; max-width: 340px;
 }
 
-.num-btn {
-    padding: 15px;
-    font-family: 'Pixelify Sans', monospace;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.85);
-    color: #333;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.15s ease;
-}
-
-.num-btn:hover {
-    background-color: #ffffff;
-    transform: translateY(-2px);
-}
-
-.num-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Nút Xóa (⌫) */
-.action-btn {
-    background-color: rgba(255, 200, 200, 0.85);
-    color: #d9534f;
-}
-
-/* Nút Enter (↵) */
-.enter-btn {
-    background-color: rgba(180, 235, 200, 0.85);
-    color: #2e7d32;
-}
-/* Container giữ mèo và hộp thoại đi liền với nhau */
 .cat-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
+    position: relative; display: flex; flex-direction: column;
+    align-items: center; cursor: pointer;
+    margin-bottom: -5px; z-index: 10;
 }
 
 .cat-image {
-    width: 25px;
-    object-fit: contain;
+    width: 35px; height: auto; object-fit: contain;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+    transform-origin: bottom center; 
 }
 
-/* Hộp thoại kiểu Undertale */
 .undertale-speech {
-    position: absolute;
-    bottom: 100%; /* Đặt hộp thoại nằm ngay trên đầu mèo */
-    margin-bottom: 12px; /* Khoảng cách giữa hộp thoại và mèo */
-    
-    background-color: #000000;
-    color: #ffffff;
-    border: 3px solid #ffffff;
-    border-radius: 6px;
-    padding: 8px 12px;
-    
-    /* Phông chữ Pixel Undertale */
-    font-family: 'Pixelify Sans', monospace;
-    font-size: 16px;
-    white-space: nowrap;
-    
-    /* Ẩn ban đầu khi chưa click */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+    position: absolute; bottom: 100%; margin-bottom: 12px; 
+    background-color: #000000; color: #ffffff;
+    border: 3px solid #ffffff; border-radius: 8px;
+    padding: 10px 14px; font-family: 'Pixelify Sans', monospace;
+    font-size: 1.1rem; white-space: nowrap;
+    opacity: 0; visibility: hidden; pointer-events: none;
 }
 
-/* Mũi tên nhỏ chỉ xuống đầu mèo */
 .undertale-speech::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
-    border-style: solid;
-    border-color: #ffffff transparent transparent transparent;
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border-width: 7px; border-style: solid; border-color: #ffffff transparent transparent transparent;
 }
-/* Overlay mờ toàn màn hình */
-.captcha-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
+
+/* HIỆU ỨNG RUNG RINH KHUNG MẬT KHẨU */
+@keyframes float-wiggle {
+    0%   { transform: rotate(-1.5deg); }
+    50%  { transform: rotate(1.5deg); }
+    100% { transform: rotate(-1.5deg); }
+}
+
+.pass-wrapper {
+    width: 100%; z-index: 5;
+    animation: float-wiggle 3s infinite ease-in-out; /* Rung rinh lơ lửng */
+}
+
+#pass-input {
+    width: 100%; padding: 15px; border-radius: 16px;
+    border: 2px solid #b59b75; /* Viền màu nâu vintage */
+    outline: none;
+    font-family: 'Pixelify Sans', monospace; font-size: 1.6rem;
+    text-align: center; -webkit-text-security: asterisk;
+    text-security: asterisk; 
+    background: transparent; /* Xóa nền trắng */
+    color: #f4ecd8; /* Màu chữ sao (***) sáng */
+    transform-origin: bottom center; 
+}
+
+/* --- BÀN PHÍM ĐƯỢC LÀM GIÃN RA --- */
+.numpad {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 15px; /* Giãn nút ra (trước là 10px) */
+    width: 100%; margin-top: 25px; /* Cách khung pass ra một xíu */
+}
+
+.num-btn {
+    padding: 22px 0; 
+    font-family: 'Pixelify Sans', monospace; font-size: 1.6rem; font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 16px; 
+    /* Nền đen trong suốt hơi sáng nhẹ */
+    background-color: rgba(30, 30, 40, 0.6); 
     backdrop-filter: blur(5px);
-    z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    color: #f4ecd8; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: background-color 0.1s ease, transform 0.1s ease;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
 
-/* Box Captcha vuông đè lên */
+.num-btn:active {
+    background-color: rgba(50, 50, 60, 0.8); transform: translateY(4px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Các nút chức năng cũng tối màu lại cho đỡ chói */
+.action-btn { background-color: rgba(217, 83, 79, 0.6); color: #fff; border: none;}
+.enter-btn { background-color: rgba(46, 125, 50, 0.6); color: #fff; border: none;}
+/* --- CAPTCHA VÀ LỚP PHỦ MÀN HÌNH TRẮNG --- */
+.captcha-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+    z-index: 999; display: flex; justify-content: center; align-items: center;
+}
+
 .captcha-box {
-    position: relative;
-    width: 360px;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    overflow: hidden;
+    position: relative; width: 90%; max-width: 360px;
+    background: #1e1e28; /* Nền hộp xám đen */
+    border-radius: 16px; padding: 20px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    display: flex; flex-direction: column; gap: 15px;
+    overflow: hidden; 
 }
 
-/* 5 thanh tiến trình ở đỉnh */
-.captcha-progress {
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
-    width: 100%;
-}
-
-.progress-bar-item {
-    flex: 1;
-    height: 8px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
+.captcha-progress { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
+.progress-bar-item { flex: 1; height: 8px; border-radius: 4px; transition: background-color 0.3s; }
 .progress-bar-item.pink { background-color: #ff94b9; }
 .progress-bar-item.red  { background-color: #ff4d4d; }
 .progress-bar-item.black{ background-color: #222222; }
 
-.captcha-title {
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
-    text-align: center;
-    display: block;
-    letter-spacing: 1px;
-}
+.captcha-title { font-weight: bold; font-size: 14px; color: #b59b75; text-align: center; display: block;}
 
-/* Khung chứa con mèo góc trái */
-.captcha-cat-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
+.captcha-cat-container { display: flex; align-items: flex-start; gap: 12px; }
+.captcha-cat-wrapper img { width: 60px; height: 60px; object-fit: contain; }
 
-.captcha-cat-wrapper img {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-}
-
-/* Bong bóng thoại con mèo */
+/* Khung chữ chạy Undertale của mèo */
 .captcha-dialogue-box {
-    flex: 1;
-    background: #f1f1f1;
-    border: 2px solid #333;
+    flex: 1; 
+    background: #111; /* Đen đậm */
+    border: 2px solid #b59b75; 
     border-radius: 12px;
-    padding: 10px 12px;
-    font-size: 14px;
-    font-weight: 600;
-    min-height: 48px;
-    color: #222;
-    position: relative;
+    padding: 10px 12px; font-size: 14px; font-weight: 600; min-height: 52px; 
+    color: #f4ecd8;
 }
-
-/* Danh sách đáp án */
-.captcha-options-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 5px;
-    position: relative;
-    min-height: 120px;
-}
-
-/* Nút trắc nghiệm xếp dọc (Câu 1 - 4) */
+.captcha-options-container { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; min-height: 120px; }
+/* Các nút lựa chọn câu trả lời */
 .captcha-opt-btn {
-    width: 100%;
-    padding: 10px 15px;
-    border: 2px solid #333;
+    width: 100%; padding: 12px 15px; 
+    border: 2px solid #b59b75; 
     border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    text-align: left;
+    background: #111; 
+    color: #f4ecd8;
+    cursor: pointer; font-weight: bold;
+    text-align: left; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+.captcha-opt-btn:active { background: #333; transform: scale(0.98); }
+
+.captcha-options-container.row-layout { flex-direction: row; justify-content: space-around; align-items: center; }
+.captcha-options-container.row-layout .captcha-opt-btn { width: 45%; text-align: center; }
+
+#btn-yes { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background-color: #4caf50; color: white; border: none; }
+#btn-no { background-color: #f44336; color: white; border: none; position: relative; }
+
+/* Lớp phủ chuyển cảnh trang */
+#whiteout-transition {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: white; z-index: 10000; opacity: 0; pointer-events: none;
 }
 
-.captcha-opt-btn:hover {
-    background: #f0f0f0;
+/* --- CSS THỜI GIAN ĐẾM --- */
+#time-counter {
+    font-family: 'Dancing Script', cursive; 
+    font-size: 3.5rem; 
+    color: #2c1e16; 
+    text-align: center; 
+    line-height: 1.2;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 20px;
+    white-space: nowrap; /* Ép hiển thị trên 1 hàng duy nhất */
 }
 
-/* Dành riêng cho câu 5: 2 nút nằm ngang */
-.captcha-options-container.row-layout {
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+/* Đảm bảo chữ không bị tràn trên điện thoại */
+@media screen and (max-width: 768px) {
+    #time-counter {
+        font-size: 1.8rem; /* Thu nhỏ nét mực trên mobile để nằm lọt 1 hàng */
+    }
 }
 
-.captcha-options-container.row-layout .captcha-opt-btn {
-    width: 45%;
-    text-align: center;
+/* =========================================
+   HIỆU ỨNG TRÁI TIM BAY LƠ LỬNG BẰNG CSS
+========================================= */
+.floating-hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Để không che mất thao tác bấm phím */
+    z-index: 1; /* Nằm dưới khung nhập mật khẩu */
+    overflow: hidden;
 }
 
-/* Nút CÓ phóng to */
-#btn-yes {
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background-color: #4caf50;
-    color: white;
-    border: none;
+.heart {
+    position: absolute;
+    bottom: -10%;
+    background-color: #ff80ab;
+    transform: rotate(-45deg);
+    animation: floatUp var(--duration) ease-in infinite;
+    opacity: 0.6;
+    border-radius: 2px;
 }
 
-/* Nút KHÔNG nhảy tung tăng */
-#btn-no {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    position: relative;
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    border-radius: 50%;
 }
+
+.heart::before {
+    top: -50%;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: 50%;
+}
+
+/* Hiệu ứng bay lên trên và lắc qua lại */
+@keyframes floatUp {
+    0% {
+        bottom: -10%;
+        transform: translateX(0) scale(var(--scale)) rotate(-45deg);
+        opacity: 0;
+    }
+    20% { opacity: 0.7; }
+    50% {
+        transform: translateX(var(--drift)) scale(var(--scale)) rotate(-30deg);
+    }
+    100% {
+        bottom: 110%;
+        transform: translateX(calc(var(--drift) * -1)) scale(var(--scale)) rotate(-60deg);
+        opacity: 0;
+    }
+}
+
+/* =========================================
+   HIỆU ỨNG CHUYỂN TRANG BẰNG TRÁI TIM
+========================================= */
+#heart-transition {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: #ff4d88; /* Màu hồng đậm lãng mạn */
+    z-index: 10000;
+    pointer-events: none;
+}
+
+/* Tạo hình trái tim */
+#heart-transition::before,
+#heart-transition::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    border-radius: 50%;
+}
+#heart-transition::before { top: -50%; left: 0; }
+#heart-transition::after { top: 0; left: 50%; }
