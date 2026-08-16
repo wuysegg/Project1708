@@ -153,12 +153,45 @@ document.addEventListener("DOMContentLoaded", () => {
     setCatBounceLevel(1);
 
     // === HÀM CHẠY CHỮ UNDERTALE ===
-    const dialogues = ["hãy nhập mật khẩu", "một ngày đặc biệt", "...", "Hòa An"];
+    const dialogues = ["dd/mm/yyyy", "một ngày đặc biệt", "...", "Hòa An"];
     let currentDialogueIndex = 0;
     let isTyping = false;
 
+    // === EASTER EGG: BẤM VÀO MÈO 5 LẦN LIÊN TỤC ===
+    let catClickCount = 0;
+    let catClickTimer = null;
+
     catWrapper.addEventListener("click", () => {
         if (isTyping || isLocked) return;
+
+        // Đếm số lần bấm liên tục trong vòng 2 giây
+        catClickCount++;
+        clearTimeout(catClickTimer);
+        
+        catClickTimer = setTimeout(() => {
+            catClickCount = 0; // Reset nếu bấm chậm
+        }, 2000);
+
+        // Nếu bấm đủ 5 lần liên tục -> Kích hoạt bí mật!
+        if (catClickCount === 5) {
+            catClickCount = 0;
+            catImg.src = CAT_SHOCK; // Mèo đổi mặt sốc/bất ngờ
+            setCatBounceLevel(3);   // Mèo nhảy cẫng lên hào hứng
+            
+            showDialogueText("Bị phát hiện rồi à? Thôi được rồi...", () => {
+                setTimeout(() => {
+                    showDialogueText("Mật mã trái tim anh chỉ có một: Yêu Hân nhất trần đời! 🤍", () => {
+                        setTimeout(() => {
+                            catImg.src = CAT_NORMAL;
+                            setCatBounceLevel(1);
+                        }, 3000);
+                    }, catDialogue);
+                }, 1500);
+            }, catDialogue);
+            return;
+        }
+
+        // Hành vi mặc định cũ (chạy qua các câu thoại bình thường)
         showDialogueText(dialogues[currentDialogueIndex], () => {
             currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
         });
@@ -221,7 +254,13 @@ document.addEventListener("DOMContentLoaded", () => {
             showDialogueText("làm tốt lắm", () => {
                 setTimeout(() => showDialogueText("vui lòng xác minh không phải robot", () => setTimeout(startRobotVerification, 1200)), 800);
             });
-        } else {
+        }else if (realPassword === "17082007") {
+            catImg.src = CAT_NORMAL; setCatBounceLevel(1);
+            showDialogueText("Đúng là sinh nhật em, nhưng pass là ngày khác cơ 😝", () => {
+                setTimeout(() => showDialogueText("thử lại nha!"), 2500);
+            });
+            realPassword = ""; passInput.value = "";}
+        else {
             // SFX Nhập sai Pass (Đoạn 1s - 2s)
             playAudioSegment(sfxPassWrong, 1.0, 2.0);
             wrongCount++;
@@ -235,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (wrongCount >= 10) {
                 catImg.src = CAT_SHOCK; setCatBounceLevel(3); showDialogueText("*??#?@!*@?!#@?*!");
             } else if (wrongCount >= 5) {
-                catImg.src = CAT_ANGRY; setCatBounceLevel(2); showDialogueText("sai mật khẩu", () => setTimeout(() => showDialogueText("Hòa An"), 800));
+                catImg.src = CAT_ANGRY; setCatBounceLevel(2); showDialogueText("sai mật khẩu", () => setTimeout(() => showDialogueText("DD/MM/YYYY"), 800),);
             } else {
                 catImg.src = CAT_NORMAL; setCatBounceLevel(1); showDialogueText("sai mật khẩu", () => setTimeout(() => showDialogueText("Hòa An"), 800));
             }
@@ -258,10 +297,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // === LOGIC CAPTCHA ===
     const questions = [
-        { q: "vui lòng trả lời những câu hỏi sau để chứng minh", options: ["Bắt đầu ngay!", "Sẵn sàng"], correctIndex: 0 },
-        { q: "1 + 1 bằng mấy?", options: ["1", "2", "3"], correctIndex: 1 },
+        { q: "vui lòng trả lời những câu hỏi sau để chứng minh khum phải là robot !", options: ["Bắt đầu ngay!", "Sẵn sàng"], correctIndex: 0 },
+        { q: "Mức độ nhớ em của anh trong một ngày tính bằng gì?", options: ["Giây", "Phút", "Giờ","lúc nào cũng nhớ"], correctIndex: 3 },
+        { q: "Thức uống yêu thích của Hân là gì", options: ["Bạc xỉu", "Trà", "Sữa"], correctIndex: 0 },
+        { q: "Hân không nên làm gì trong kì kinh nguyệt ?", options: ["Ăn cay", "Thức khuya", "Ghét Thảo", "TẤT CẢ CÁC ĐÁP ÁN TRÊN!"], correctIndex: 3 },
         { q: "Hôm nay là ngày gì?", options: ["Ngày bình thường", "Ngày rất đặc biệt"], correctIndex: 1 },
-        { q: "Thủ đô của Việt Nam là gì?", options: ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng"], correctIndex: 0 },
         { q: "em có yêu anh không", options: ["Có", "Không"], isFinal: true }
     ];
 
@@ -388,4 +428,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+    // === HIỆU ỨNG TRÁI TIM NẢY LÊN KHI CLICK CHUỘT ===
+    document.addEventListener('click', function(e) {
+        const clickHeart = document.createElement('div');
+        clickHeart.classList.add('click-heart');
+    
+        // Lấy tọa độ click chuột
+        clickHeart.style.left = e.pageX + 'px';
+        clickHeart.style.top = e.pageY + 'px';
+    
+        document.body.appendChild(clickHeart);
+    
+        // Tự động xóa trái tim sau 800ms để không làm nặng trình duyệt
+        setTimeout(() => {
+            clickHeart.remove();
+        }, 800);
+    });
 });

@@ -14,7 +14,20 @@ window.onload = () => {
   }
   // ====================================================
   const backgroundMusic = document.getElementById("bg-music");
+  // === TÍNH NĂNG BẤM VÀO ĐĨA THAN ĐỂ BẬT/TẮT NHẠC ===
+  const vinylRecord = document.querySelector(".vinyl-record");
   
+  vinylRecord.addEventListener("click", (e) => {
+    e.stopPropagation(); // Ngăn chặn các hiệu ứng click khác đè lên
+    
+    if (backgroundMusic.paused) {
+      backgroundMusic.play();
+      vinylRecord.classList.remove("paused");
+    } else {
+      backgroundMusic.pause();
+      vinylRecord.classList.add("paused");
+    }
+  });
   // Phát nhạc khi click lần đầu
   document.body.addEventListener("click", () => {
     backgroundMusic.play().catch(error => {
@@ -123,7 +136,11 @@ window.onload = () => {
         item.classList.add("opened");
         return;
       }
-
+      // THÊM ĐOẠN NÀY: Nếu click vào ảnh đã ở giữa -> Lật mặt sau 3D
+      if (item.classList.contains("focused") && !item.classList.contains("is-letter")) {
+        item.classList.toggle("flipped"); // Lật qua lật lại
+        return;
+      }
       // Xóa focus ở các ảnh khác (nếu có)
       galleryItems.forEach(i => {
         i.classList.remove("focused", "opened");
@@ -141,5 +158,46 @@ window.onload = () => {
       item.classList.remove("focused", "opened");
     });
     focusBackdrop.classList.remove("active");
+  });
+  // === HIỆU ỨNG TẮT NHẠC VÀ CHUYỂN CẢNH KẾT THÚC (OUT) ===
+  const sleepBtn = document.getElementById("sleep-btn");
+  const endingOverlay = document.getElementById("ending-overlay");
+
+  if (sleepBtn && endingOverlay) {
+    sleepBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Không cho kích hoạt phát nhạc lại
+      
+      // 1. Phủ màn hình đen
+      endingOverlay.classList.add("active");
+      
+      // 2. Nhạc nhỏ dần (Fade out audio)
+      let fadeAudio = setInterval(() => {
+        // Mỗi 200ms giảm 5% âm lượng
+        if (backgroundMusic.volume > 0.05) {
+          backgroundMusic.volume -= 0.05;
+        } else {
+          // Khi âm lượng về sát 0 thì tắt hẳn và dọn dẹp interval
+          backgroundMusic.volume = 0;
+          backgroundMusic.pause();
+          clearInterval(fadeAudio);
+        }
+      }, 200); 
+    });
+  }
+  // === HIỆU ỨNG TRÁI TIM NẢY LÊN KHI CLICK CHUỘT ===
+  document.addEventListener('click', function(e) {
+    const clickHeart = document.createElement('div');
+    clickHeart.classList.add('click-heart');
+    
+    // Lấy tọa độ click chuột
+    clickHeart.style.left = e.pageX + 'px';
+    clickHeart.style.top = e.pageY + 'px';
+    
+    document.body.appendChild(clickHeart);
+    
+    // Tự động xóa trái tim sau 800ms để không làm nặng trình duyệt
+    setTimeout(() => {
+        clickHeart.remove();
+    }, 800);
   });
 };

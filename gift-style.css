@@ -1951,6 +1951,7 @@ body {
 }
 
 .letter-content {
+
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -2495,4 +2496,163 @@ body {
   .spotify-card {
     width: 55vmin;
   }
+}
+
+/* =========================================
+   TẮT ĐƯỜNG KẺ GIẤY TRONG BỨC THƯ
+========================================= */
+.letter-content {
+  background-image: none !important;
+  /* Làm nét chữ dày thêm 0.4px (cùng màu mực nâu đen #3e3328) */
+  -webkit-text-stroke: 0.3px #3e3328 !important;
+}
+/* =========================================
+   TÍNH NĂNG PLAY/PAUSE CHO ĐĨA THAN
+========================================= */
+.vinyl-record {
+  cursor: pointer; /* Đổi con trỏ thành bàn tay khi lướt qua đĩa */
+  transition: transform 0.2s ease; /* Bấm vào hơi lún nhẹ cho chân thực */
+}
+
+.vinyl-record:active {
+  transform: scale(0.95);
+}
+
+/* Class này sẽ được thêm vào bằng JS khi nhạc dừng */
+.vinyl-record.paused {
+  animation-play-state: paused !important; /* Dừng hiệu ứng xoay tròn */
+}
+/* =========================================
+   NÚT CHÚC NGỦ NGON & KẾT THÚC (OUT)
+========================================= */
+.sleep-btn {
+  position: fixed;
+  top: 3vmin;
+  right: 4vmin;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f4ecd8;
+  padding: 1.2vmin 2vmin;
+  border-radius: 20px;
+  font-family: sans-serif;
+  font-size: 1.5vmin;
+  cursor: pointer;
+  z-index: 800;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.sleep-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* LỚP PHỦ MÀN ĐÊM KẾT THÚC */
+.ending-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: #010113; /* Màu đen của bầu trời */
+  z-index: 100000; /* Cao nhất để che mọi thứ */
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; 
+  pointer-events: none; /* Bình thường không bấm được */
+  transition: opacity 3.5s ease-in-out; /* Phủ đen từ từ trong 3.5s */
+}
+
+/* Kích hoạt lớp phủ */
+.ending-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Dòng chữ cuối cùng */
+.ending-text {
+  color: #e6d5b8;
+  font-family: 'Houstoner', cursive; /* Giữ font chữ viết tay hoài cổ */
+  font-size: 3.5vmin;
+  text-align: center;
+  line-height: 2;
+  opacity: 0;
+  transform: translateY(15px);
+  /* Chờ màn hình đen được 2s thì chữ mới từ từ hiện lên */
+  transition: all 3s ease-in-out 2s; 
+}
+
+.ending-overlay.active .ending-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tối ưu riêng cho điện thoại */
+@media screen and (max-width: 768px) {
+    .sleep-btn { font-size: 3vmin; padding: 2vmin 4vmin; top: 2vmin; right: 2vmin; }
+    .ending-text { font-size: 5vmin; padding: 0 6vmin; }
+}
+
+/* =========================================
+   HIỆU ỨNG TRÁI TIM BUNG TỎA KHI CLICK CHUỘT
+========================================= */
+.click-heart {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: #ff4d88;
+  transform: translate(-50%, -50%) rotate(-45deg) scale(0);
+  pointer-events: none; /* Không cản trở các nút bấm */
+  z-index: 999999; /* Luôn hiển thị trên cùng */
+  filter: drop-shadow(0 0 8px rgba(255, 77, 136, 0.8));
+  animation: burstHeart 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.click-heart::before,
+.click-heart::after {
+  content: ''; position: absolute; width: 100%; height: 100%;
+  background-color: inherit; border-radius: 50%;
+}
+.click-heart::before { top: -50%; left: 0; }
+.click-heart::after { top: 0; left: 50%; }
+
+@keyframes burstHeart {
+  0% { transform: translate(-50%, -50%) rotate(-45deg) scale(0); opacity: 1; }
+  40% { transform: translate(-50%, -70%) rotate(-45deg) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -120%) rotate(-45deg) scale(0.5); opacity: 0; }
+}
+/* =========================================
+   HIỆU ỨNG LẬT ẢNH 3D (MẶT TRƯỚC VÀ MẶT SAU)
+========================================= */
+.gallery-item {
+  perspective: 1000px; /* Tạo không gian 3D */
+}
+
+/* Đảm bảo toàn bộ khung ảnh xoay 3D mượt mà */
+.vintage-photo {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1) !important; 
+}
+
+/* Xoay 180 độ khi có class flipped */
+.gallery-item.flipped .vintage-photo {
+  transform: rotateY(180deg) !important;
+}
+
+/* Che mặt trước lại khi xoay */
+.vintage-photo img, .photo-date {
+  backface-visibility: hidden;
+}
+
+/* VẼ MẶT SAU CỦA BỨC ẢNH (Bằng giấy ố vàng) */
+.vintage-photo::after {
+  content: 'Đáng yêu quá! Lật lại ngắm tiếp nha... 💕'; /* Lời nhắn dùng chung */
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: #e6d5b8; 
+  border: 1px solid #b59b75;
+  transform: rotateY(180deg); /* Ốp ngược lại mặt sau */
+  backface-visibility: hidden;
+  
+  /* Căn giữa chữ */
+  display: flex; justify-content: center; align-items: center; text-align: center;
+  font-family: 'Houstoner', cursive; font-size: 2.5vmin; color: #5a4b3c; padding: 2vmin;
+  box-shadow: inset 0 0 15px rgba(139, 69, 19, 0.15); box-sizing: border-box;
 }

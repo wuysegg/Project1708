@@ -14,6 +14,26 @@ body, html {
     animation: nightBreeze 15s ease infinite;
 }
 
+/* =========================================
+   HIỆU ỨNG BẦU TRỜI SAO LẤP LÁNH
+========================================= */
+.stars-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; /* Tránh đè lên các nút bấm */
+    z-index: 0; /* Nằm dưới cùng, chỉ trên background gradient */
+    
+    /* Ma thuật vẽ sao bằng SVG siêu nhẹ */
+    background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="20" cy="20" r="1.5" fill="%23ffffff" opacity="0.8"/><circle cx="150" cy="50" r="1" fill="%23ffffff" opacity="0.4"/><circle cx="80" cy="140" r="2" fill="%23ffffff" opacity="0.6"/><circle cx="180" cy="180" r="1" fill="%23ffffff" opacity="0.3"/></svg>') repeat;
+    
+    animation: twinkleStars 4s infinite alternate;
+}
+
+@keyframes twinkleStars {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; transform: scale(1.02); } /* Phóng to rất nhẹ tạo cảm giác không gian thở */
+}
+
 /* Thêm đoạn keyframes này ngay bên dưới để tạo chuyển động cho nền */
 @keyframes nightBreeze {
     0% { background-position: 0% 50%; }
@@ -22,20 +42,72 @@ body, html {
 }
 
 /* --- MÀN HÌNH KHỞI ĐỘNG TRẮNG BÓC --- */
+/* --- MÀN HÌNH KHỞI ĐỘNG (ĐÃ NÂNG CẤP) --- */
 #startup-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: #ffffff; z-index: 9999;
-    display: flex; justify-content: center; align-items: center;
+    
+    /* Đồng bộ nền gradient màn đêm thay vì màu trắng chói */
+    background: linear-gradient(45deg, #010113, #0a0b2a, #030315, #080820);
+    background-size: 400% 400%;
+    animation: nightBreeze 15s ease infinite;
+    
+    z-index: 9999;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    gap: 30px; /* Tạo khoảng cách đều giữa câu chào, nút và bộ đếm */
 }
 
-#start-btn {
-    padding: 15px 30px; font-family: 'Pixelify Sans', monospace;
-    font-size: 1.2rem; background: #ff94b9; color: white;
-    border: none; border-radius: 12px; cursor: pointer;
-    box-shadow: 0 5px 15px rgba(255, 148, 185, 0.4);
-    transition: transform 0.2s;
+/* Hiệu ứng câu chào hiện lên từ từ */
+.startup-greeting {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: #f4ecd8;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInGreeting 1.5s ease forwards 0.5s;
+    text-align: center;
 }
-#start-btn:active { transform: scale(0.95); }
+
+@keyframes fadeInGreeting {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nút bấm pha lê - Đập thình thịch như nhịp tim */
+#start-btn {
+    padding: 15px 40px; 
+    font-family: 'Pixelify Sans', monospace;
+    font-size: 1.3rem; 
+    
+    /* Giao diện kính mờ Glassmorphism */
+    background: rgba(255, 77, 136, 0.1); 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 77, 136, 0.4); 
+    border-radius: 30px; 
+    color: #ff94b9; 
+    cursor: pointer;
+    
+    transition: all 0.3s ease;
+    animation: heartbeatBtn 1.5s infinite alternate; /* Kích hoạt nhịp đập */
+}
+
+/* Hiệu ứng khi lướt chuột qua */
+#start-btn:hover { 
+    background: rgba(255, 77, 136, 0.3);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 77, 136, 0.8);
+}
+
+/* Hiệu ứng khi bấm xuống */
+#start-btn:active { 
+    transform: scale(0.9) !important; /* Lún sâu xuống */
+    animation: none; /* Dừng đập khi đang bấm */
+}
+
+/* Keyframes định nghĩa nhịp đập (Phóng to, tỏa sáng) */
+@keyframes heartbeatBtn {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 77, 136, 0.2); }
+    100% { transform: scale(1.08); box-shadow: 0 0 25px rgba(255, 77, 136, 0.6); }
+}
 
 #time-counter {
     font-family: 'Dancing Script', cursive; 
@@ -57,6 +129,16 @@ body, html {
 .content-wrapper {
     display: flex; flex-direction: column; align-items: center;
     gap: 0px; width: 90%; max-width: 340px;
+    
+    /* TẠO HIỆU ỨNG KÍNH MỜ BỌC BÊN NGOÀI */
+    background: rgba(255, 255, 255, 0.03); /* Nền trắng cực kỳ mỏng */
+    backdrop-filter: blur(15px); /* Làm mờ cảnh vật phía sau (trái tim) */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Viền kính mỏng */
+    border-radius: 24px;
+    padding: 30px 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 10; /* Đảm bảo tấm kính luôn đè lên những trái tim bay */
 }
 
 .cat-wrapper {
@@ -99,16 +181,16 @@ body, html {
 
 #pass-input {
     width: 100%; padding: 15px; border-radius: 16px;
-    border: 2px solid #b59b75; /* Viền màu nâu vintage */
+    border: 1px solid rgba(255, 255, 255, 0.2); 
     outline: none;
     font-family: 'Pixelify Sans', monospace; font-size: 1.6rem;
     text-align: center; -webkit-text-security: asterisk;
     text-security: asterisk; 
-    background: transparent; /* Xóa nền trắng */
-    color: #f4ecd8; /* Màu chữ sao (***) sáng */
+    background: rgba(0, 0, 0, 0.2); /* Nền lõm tối màu */
+    color: #ff94b9; /* Cho mấy dấu sao (*) màu hồng sáng */
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.4);
     transform-origin: bottom center; 
 }
-
 /* --- BÀN PHÍM ĐƯỢC LÀM GIÃN RA --- */
 .numpad {
     display: grid; grid-template-columns: repeat(3, 1fr);
@@ -121,23 +203,60 @@ body, html {
     font-family: 'Pixelify Sans', monospace; font-size: 1.6rem; font-weight: bold;
     border: 1px solid rgba(255, 255, 255, 0.1); 
     border-radius: 16px; 
-    /* Nền đen trong suốt hơi sáng nhẹ */
-    background-color: rgba(30, 30, 40, 0.6); 
-    backdrop-filter: blur(5px);
-    color: #f4ecd8; 
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-    transition: background-color 0.1s ease, transform 0.1s ease;
+    background-color: rgba(255, 255, 255, 0.05); /* Trắng trong suốt nhẹ */
+    color: #fff; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.15s ease;
     touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
 
 .num-btn:active {
-    background-color: rgba(50, 50, 60, 0.8); transform: translateY(4px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    background-color: rgba(255, 255, 255, 0.15); 
+    transform: translateY(4px) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Các nút chức năng cũng tối màu lại cho đỡ chói */
-.action-btn { background-color: rgba(217, 83, 79, 0.6); color: #fff; border: none;}
-.enter-btn { background-color: rgba(46, 125, 50, 0.6); color: #fff; border: none;}
+/* Biến nút Xóa và nút Enter thành dạng viền phát sáng thay vì cục màu đặc */
+.action-btn { 
+    background-color: rgba(255, 77, 77, 0.1); 
+    color: #ff4d4d; 
+    border: 1px solid rgba(255, 77, 77, 0.3); 
+}
+.enter-btn { 
+    background-color: rgba(76, 175, 80, 0.1); 
+    color: #4caf50; 
+    border: 1
+    px solid rgba(76, 175, 80, 0.3); 
+}
+/* =========================================
+   HIỆU ỨNG HOVER (LƯỚT CHUỘT) CHO BÀN PHÍM
+========================================= */
+
+/* 1. Nút số thường: Sáng lên và nổi nhẹ lên trên */
+.num-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12); /* Sáng hơn nền kính một chút */
+    transform: translateY(-2px); /* Nhấc nhẹ lên */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Lưu ý: Giữ nguyên class :active cũ để khi bấm nó vẫn lún xuống */
+.num-btn:active {
+    background-color: rgba(255, 255, 255, 0.15); 
+    transform: translateY(4px) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Nút Xóa (Màu đỏ): Tỏa hào quang đỏ khi lướt qua */
+.action-btn:hover {
+    background-color: rgba(255, 77, 77, 0.2);
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.4); 
+}
+
+/* 3. Nút Enter (Màu xanh): Tỏa hào quang xanh lục khi lướt qua */
+.enter-btn:hover {
+    background-color: rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4); 
+}
 /* --- CAPTCHA VÀ LỚP PHỦ MÀN HÌNH TRẮNG --- */
 .captcha-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -147,21 +266,48 @@ body, html {
 
 .captcha-box {
     position: relative; width: 90%; max-width: 360px;
-    background: #1e1e28; /* Nền hộp xám đen */
-    border-radius: 16px; padding: 20px;
-    border: 1px solid #333;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    /* Đổi nền đặc thành nền kính mờ giống bảng mật khẩu */
+    background: rgba(20, 20, 30, 0.5); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Viền kính mỏng */
+    border-radius: 24px; /* Bo góc tròn trịa hơn */
+    padding: 25px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
     display: flex; flex-direction: column; gap: 15px;
     overflow: hidden; 
 }
 
-.captcha-progress { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
-.progress-bar-item { flex: 1; height: 8px; border-radius: 4px; transition: background-color 0.3s; }
-.progress-bar-item.pink { background-color: #ff94b9; }
-.progress-bar-item.red  { background-color: #ff4d4d; }
-.progress-bar-item.black{ background-color: #222222; }
+.captcha-title { 
+    font-weight: bold; font-size: 14px; 
+    color: #f4ecd8; /* Chữ màu sáng thanh lịch */
+    text-align: center; display: block;
+    letter-spacing: 1px;
+}
 
-.captcha-title { font-weight: bold; font-size: 14px; color: #b59b75; text-align: center; display: block;}
+.captcha-progress { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
+.progress-bar-item { 
+    flex: 1; height: 6px; border-radius: 4px; 
+    transition: all 0.3s ease; 
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Trạng thái chưa làm: Trong suốt, viền mờ */
+.progress-bar-item.pink { 
+    background-color: rgba(255, 255, 255, 0.15); 
+}
+
+/* Trạng thái LÀM ĐÚNG: Sáng rực màu hồng của trái tim thay vì màu đen */
+.progress-bar-item.black { 
+    background-color: #ff4d88; 
+    box-shadow: 0 0 10px rgba(255, 77, 136, 0.6); /* Hào quang hồng */
+}
+
+/* Trạng thái LÀM SAI: Sáng rực màu đỏ */
+.progress-bar-item.red { 
+    background-color: #ff4d4d; 
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); /* Hào quang đỏ */
+}
 
 .captcha-cat-container { display: flex; align-items: flex-start; gap: 12px; }
 .captcha-cat-wrapper img { width: 60px; height: 60px; object-fit: contain; }
@@ -169,23 +315,40 @@ body, html {
 /* Khung chữ chạy Undertale của mèo */
 .captcha-dialogue-box {
     flex: 1; 
-    background: #111; /* Đen đậm */
-    border: 2px solid #b59b75; 
+    background: rgba(0, 0, 0, 0.3); /* Khung lõm tối màu */
+    border: 1px solid rgba(255, 255, 255, 0.1); 
     border-radius: 12px;
-    padding: 10px 12px; font-size: 14px; font-weight: 600; min-height: 52px; 
+    padding: 12px 15px; font-size: 14px; font-weight: 600; min-height: 52px; 
     color: #f4ecd8;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
-.captcha-options-container { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; min-height: 120px; }
+
 /* Các nút lựa chọn câu trả lời */
 .captcha-opt-btn {
-    width: 100%; padding: 12px 15px; 
-    border: 2px solid #b59b75; 
-    border-radius: 8px;
-    background: #111; 
+    width: 100%; padding: 14px 15px; 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05); /* Nền nổi nhẹ */
     color: #f4ecd8;
     cursor: pointer; font-weight: bold;
-    text-align: left; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    text-align: left; 
+    transition: all 0.2s ease; 
 }
+
+/* HIỆU ỨNG HOVER CHO NÚT BẤM (Rất quan trọng) */
+.captcha-opt-btn:hover { 
+    background: rgba(255, 255, 255, 0.15); 
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(5px); /* Trượt nhẹ sang phải khi lướt chuột */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.captcha-opt-btn:active { 
+    background: rgba(255, 255, 255, 0.2); 
+    transform: scale(0.98); 
+}
+.captcha-options-container { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; min-height: 120px; }
+
 .captcha-opt-btn:active { background: #333; transform: scale(0.98); }
 
 .captcha-options-container.row-layout { flex-direction: row; justify-content: space-around; align-items: center; }
@@ -236,7 +399,11 @@ body, html {
 .heart {
     position: absolute;
     bottom: -10%;
-    background-color: #ff80ab;
+    background-color: #ff4d88; /* Trái tim màu hồng tươi rực rỡ */
+    
+    /* THÊM DÒNG NÀY ĐỂ TẠO HÀO QUANG SÁNG */
+    filter: drop-shadow(0 0 10px rgba(255, 77, 136, 0.8)); 
+    
     transform: rotate(-45deg);
     animation: floatUp var(--duration) ease-in infinite;
     opacity: 0.6;
@@ -307,3 +474,63 @@ body, html {
 }
 #heart-transition::before { top: -50%; left: 0; }
 #heart-transition::after { top: 0; left: 50%; }
+
+/* =========================================
+   HIỆU ỨNG TRÁI TIM BUNG TỎA KHI CLICK CHUỘT
+========================================= */
+.click-heart {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #ff4d88;
+    transform: translate(-50%, -50%) rotate(-45deg) scale(0);
+    pointer-events: none; /* Không cản trở các nút bấm */
+    z-index: 999999; /* Luôn hiển thị trên cùng */
+    filter: drop-shadow(0 0 8px rgba(255, 77, 136, 0.8));
+    animation: burstHeart 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.click-heart::before,
+.click-heart::after {
+    content: ''; position: absolute; width: 100%; height: 100%;
+    background-color: inherit; border-radius: 50%;
+}
+.click-heart::before { top: -50%; left: 0; }
+.click-heart::after { top: 0; left: 50%; }
+
+@keyframes burstHeart {
+    0% { transform: translate(-50%, -50%) rotate(-45deg) scale(0); opacity: 1; }
+    40% { transform: translate(-50%, -70%) rotate(-45deg) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -120%) rotate(-45deg) scale(0.5); opacity: 0; }
+}
+/* =========================================
+   HIỆU ỨNG SAO BĂNG XẸT QUA (SHOOTING STARS)
+========================================= */
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+    transform: rotate(-45deg);
+    animation: shooting 4s linear infinite backwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Cái đầu sáng của sao băng */
+.shooting-star::before {
+    content: ''; position: absolute; top: -2px; left: 0;
+    width: 4px; height: 4px; background: #fff; border-radius: 50%;
+    box-shadow: 0 0 10px 3px rgba(255,255,255,0.8);
+}
+
+/* Tạo độ trễ và vị trí ngẫu nhiên cho 3 ngôi sao */
+.shooting-star:nth-child(1) { top: 10%; left: 80%; animation-delay: 0s; }
+.shooting-star:nth-child(2) { top: -10%; left: 50%; animation-delay: 1.5s; animation-duration: 5s; }
+.shooting-star:nth-child(3) { top: 40%; left: 95%; animation-delay: 3s; animation-duration: 3.5s; }
+
+@keyframes shooting {
+    0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+    20% { transform: translate(-400px, 400px) rotate(-45deg); opacity: 0; }
+    100% { transform: translate(-400px, 400px) rotate(-45deg); opacity: 0; }
+}
