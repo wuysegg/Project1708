@@ -2443,62 +2443,61 @@ body {
    TỐI ƯU HÓA RIÊNG CHO MÀN HÌNH ĐIỆN THOẠI
 ========================================= */
 @media screen and (max-width: 768px) {
-  /* 1. Kích thước các bức ảnh rải rác trên mobile */
+  /* 1. Tăng nhẹ kích thước các bức ảnh rải rác để dễ dùng ngón tay chạm/kéo */
   .gallery-item {
     width: 22vmin !important;
     height: 28vmin !important;
   }
 
-  /* 2. Kích thước phong bì thư khi chưa mở */
+  /* 2. Phóng to phong bì thư khi ở trên điện thoại */
   .gallery-item.is-letter,
   .gallery-item.focused.is-letter {
     width: 40vmin !important;
     height: 42vmin !important;
   }
 
-  /* 3. Kích thước khung thư khi bấm mở (To rộng vừa vặn màn hình) */
-  .gallery-item.focused.is-letter.opened {
-    width: 85vw !important;
-    height: 75vh !important;
-    max-height: 500px !important;
-  }
-
-  /* 4. Nội dung bên trong bức thư */
+  /* 3. Tối ưu hiển thị nội dung thư (Sửa lỗi mất chữ, bật cuộn dọc) */
   .letter-content {
-    font-size: 2.8vmin !important; /* Cỡ chữ vừa phải, dễ đọc */
-    line-height: 4.2vmin !important; /* Khoảng cách dòng chuẩn */
-    padding: 3.5vmin 4vmin !important;
+    font-size: 3.5vmin !important; 
+    line-height: 5.5vmin !important;
+    padding: 4vmin 4vmin !important;
     
-    /* Bật cuộn dọc mượt mà */
+    /* Bật tính năng cuộn dọc mượt mà trên điện thoại */
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch; 
     
-    /* Tắt hiệu ứng viết tay trên mobile để tránh lỗi kẹt chữ */
+    /* Tắt hiệu ứng viết tay để tránh kẹt chữ dài */
     animation: none !important;
     opacity: 1 !important;
-    -webkit-text-stroke: 0px !important; 
   }
 
-  /* 5. Khoảng cách các đoạn văn */
+  /* Kéo dài khung thư khi mở trên điện thoại */
+  .gallery-item.focused.is-letter.opened {
+    height: 85vh !important; 
+    max-height: 600px;
+  }
+
+  /* Đảm bảo các đoạn văn không bị đè dòng */
   .letter-content p {
-    margin-bottom: 1.2vmin !important;
+    margin-bottom: 1.5vmin !important;
     transform: none !important;
     padding-left: 0 !important;
     margin-left: 0 !important;
     opacity: 1 !important; 
   }
 
-  /* 6. Chữ ký cuối thư */
+  /* 4. Chữ ký cuối thư hiển thị rõ ràng */
   .letter-content .signature {
-    font-size: 3.5vmin !important;
-    line-height: 4.8vmin !important;
-    margin-top: 1.5vmin !important;
+    font-size: 4vmin !important;
+    line-height: 5vmin !important;
+    margin-top: 2vmin !important;
   }
 
-  /* 7. Phóng to đĩa nhạc Spotify cho dễ bấm */
+  /* 5. Phóng to đĩa nhạc Spotify cho dễ bấm */
   .spotify-card {
     width: 55vmin;
   }
+  
 }
 /* =========================================
    TẮT ĐƯỜNG KẺ GIẤY TRONG BỨC THƯ
