@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // === LOGIC CAPTCHA ===
     const questions = [
         { q: "vui lòng trả lời những câu hỏi sau để chứng minh khum phải là robot !", options: ["Bắt đầu ngay!", "Sẵn sàng"], correctIndex: 0 },
-        { q: "Mức độ nhớ em của anh trong một ngày tính bằng gì?", options: ["Giây", "Phút", "Giờ","lúc nào cũng nhớ"], correctIndex: 3 },
+        { q: "Vấn đề đau đầu nhất của anh/em ở thời điểm hiện tại là gì?", options: ["Hôm nay ăn gì, mai ăn gì, ngày kia ăn gì?", "Làm sao để kiếm thật nhiều tiền mua trà sữa?", "Làm thế nào để bắt cóc em về chung một nhà mà công an không bắt?","Ngày mai học môn gì?"], correctIndex: 2 },
         { q: "Thức uống yêu thích của Hân là gì", options: ["Bạc xỉu", "Trà", "Sữa"], correctIndex: 0 },
         { q: "Hân không nên làm gì trong kì kinh nguyệt ?", options: ["Ăn cay", "Thức khuya", "Ghét Thảo", "TẤT CẢ CÁC ĐÁP ÁN TRÊN!"], correctIndex: 3 },
         { q: "Hôm nay là ngày gì?", options: ["Ngày bình thường", "Ngày rất đặc biệt"], correctIndex: 1 },
