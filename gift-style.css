@@ -1602,8 +1602,8 @@ body {
 }
 
 .spotify-card {
-  background: rgba(18, 18, 18, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(18, 18, 18, 0.95)
+  /*backdrop-filter: blur(12px);*/
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
@@ -1801,18 +1801,7 @@ body {
 .firefly:nth-child(1) { top: 15%; left: 20%; --duration: 5s; --twinkle: 1.2s; animation-delay: 0s, 0.2s; }
 .firefly:nth-child(2) { top: 45%; left: 70%; --duration: 6s; --twinkle: 1.8s; animation-delay: -1s, 0.5s; }
 .firefly:nth-child(3) { top: 85%; left: 30%; --duration: 4.5s; --twinkle: 1.4s; animation-delay: -2s, 0.8s; }
-.firefly:nth-child(4) { top: 25%; left: 85%; --duration: 7s; --twinkle: 1.6s; animation-delay: -3s, 0.1s; }
-.firefly:nth-child(5) { top: 60%; left: 15%; --duration: 5.5s; --twinkle: 1.3s; animation-delay: -0.5s, 0.4s; }
-.firefly:nth-child(6) { top: 75%; left: 60%; --duration: 6.5s; --twinkle: 1.7s; animation-delay: -1.5s, 0.6s; }
-.firefly:nth-child(7) { top: 35%; left: 45%; --duration: 4.8s; --twinkle: 1.1s; animation-delay: -0.8s, 0.3s; }
-.firefly:nth-child(8) { top: 10%; left: 65%; --duration: 5.2s; --twinkle: 1.5s; animation-delay: -2.5s, 0.9s; }
-.firefly:nth-child(9) { top: 50%; left: 40%; --duration: 6.2s; --twinkle: 1.4s; animation-delay: -1.2s, 0.7s; }
-.firefly:nth-child(10) { top: 80%; left: 80%; --duration: 4.2s; --twinkle: 1.2s; animation-delay: -0.2s, 0.1s; }
-.firefly:nth-child(11) { top: 20%; left: 50%; --duration: 5.8s; --twinkle: 1.6s; animation-delay: -3.5s, 0.5s; }
-.firefly:nth-child(12) { top: 65%; left: 90%; --duration: 6.8s; --twinkle: 1.9s; animation-delay: -1.8s, 0.2s; }
-.firefly:nth-child(13) { top: 40%; left: 10%; --duration: 4.6s; --twinkle: 1.3s; animation-delay: -0.6s, 0.4s; }
-.firefly:nth-child(14) { top: 90%; left: 55%; --duration: 5.4s; --twinkle: 1.5s; animation-delay: -2.2s, 0.8s; }
-.firefly:nth-child(15) { top: 5%; left: 35%; --duration: 6.1s; --twinkle: 1.7s; animation-delay: -1.1s, 0.6s; }
+
 
 @keyframes hover-fly {
   0% { transform: translate(0, 0); }
@@ -2454,57 +2443,59 @@ body {
    TỐI ƯU HÓA RIÊNG CHO MÀN HÌNH ĐIỆN THOẠI
 ========================================= */
 @media screen and (max-width: 768px) {
-  /* 1. Tăng nhẹ kích thước các bức ảnh rải rác để dễ dùng ngón tay chạm/kéo */
+  /* 1. Kích thước các bức ảnh rải rác trên mobile */
   .gallery-item {
     width: 22vmin !important;
     height: 28vmin !important;
   }
 
-  /* 2. Phóng to phong bì thư khi ở trên điện thoại */
+  /* 2. Kích thước phong bì thư khi chưa mở */
   .gallery-item.is-letter,
   .gallery-item.focused.is-letter {
     width: 40vmin !important;
     height: 42vmin !important;
   }
 
-  /* 3. Tối ưu hiển thị nội dung thư (Sửa lỗi mất chữ, bật cuộn dọc) */
+  /* 3. Kích thước khung thư khi bấm mở (To rộng vừa vặn màn hình) */
+  .gallery-item.focused.is-letter.opened {
+    width: 85vw !important;
+    height: 75vh !important;
+    max-height: 500px !important;
+  }
+
+  /* 4. Nội dung bên trong bức thư */
   .letter-content {
-    font-size: 3.5vmin !important; 
-    line-height: 5.5vmin !important;
-    padding: 4vmin 4vmin !important;
+    font-size: 2.8vmin !important; /* Cỡ chữ vừa phải, dễ đọc */
+    line-height: 4.2vmin !important; /* Khoảng cách dòng chuẩn */
+    padding: 3.5vmin 4vmin !important;
     
-    /* Bật tính năng cuộn dọc mượt mà trên điện thoại */
+    /* Bật cuộn dọc mượt mà */
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch; 
     
-    /* Tắt hiệu ứng viết tay để tránh kẹt chữ dài */
+    /* Tắt hiệu ứng viết tay trên mobile để tránh lỗi kẹt chữ */
     animation: none !important;
     opacity: 1 !important;
+    -webkit-text-stroke: 0px !important; 
   }
 
-  /* Kéo dài khung thư khi mở trên điện thoại */
-  .gallery-item.focused.is-letter.opened {
-    height: 85vh !important; 
-    max-height: 600px;
-  }
-
-  /* Đảm bảo các đoạn văn không bị đè dòng */
+  /* 5. Khoảng cách các đoạn văn */
   .letter-content p {
-    margin-bottom: 1.5vmin !important;
+    margin-bottom: 1.2vmin !important;
     transform: none !important;
     padding-left: 0 !important;
     margin-left: 0 !important;
     opacity: 1 !important; 
   }
 
-  /* 4. Chữ ký cuối thư hiển thị rõ ràng */
+  /* 6. Chữ ký cuối thư */
   .letter-content .signature {
-    font-size: 4vmin !important;
-    line-height: 5vmin !important;
-    margin-top: 2vmin !important;
+    font-size: 3.5vmin !important;
+    line-height: 4.8vmin !important;
+    margin-top: 1.5vmin !important;
   }
 
-  /* 5. Phóng to đĩa nhạc Spotify cho dễ bấm */
+  /* 7. Phóng to đĩa nhạc Spotify cho dễ bấm */
   .spotify-card {
     width: 55vmin;
   }
