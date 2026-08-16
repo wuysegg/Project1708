@@ -2467,37 +2467,48 @@ body {
     height: 42vmin !important;
   }
 
-  /* 3. Chiều cao thư kéo dài hơn khi mở trên điện thoại để đủ chỗ chứa chữ */
-  .gallery-item.focused.is-letter.opened {
-    height: 90vmin !important;
-  }
-
-  /* 4. Phóng to font chữ và căn lại đường kẻ dòng để dễ đọc */
+  /* 3. Tối ưu hiển thị nội dung thư (Sửa lỗi mất chữ, bật cuộn dọc) */
   .letter-content {
-    font-size: 3vmin !important; 
-    line-height: 4.5vmin !important;
-    padding: 3vmin 4vmin !important;
-    background-image: repeating-linear-gradient(
-      transparent, 
-      transparent calc(4.5vmin - 1px), 
-      rgba(180, 140, 100, 0.5) calc(4.5vmin - 1px), 
-      rgba(180, 140, 100, 0.5) 4.5vmin
-    ) !important;
+    font-size: 3.5vmin !important; 
+    line-height: 5.5vmin !important;
+    padding: 4vmin 4vmin !important;
+    
+    /* Bật tính năng cuộn dọc mượt mà trên điện thoại */
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch; 
+    
+    /* Tắt hiệu ứng viết tay để tránh kẹt chữ dài */
+    animation: none !important;
+    opacity: 1 !important;
   }
 
-  /* 5. Phóng to chữ ký */
+  /* Kéo dài khung thư khi mở trên điện thoại */
+  .gallery-item.focused.is-letter.opened {
+    height: 85vh !important; 
+    max-height: 600px;
+  }
+
+  /* Đảm bảo các đoạn văn không bị đè dòng */
+  .letter-content p {
+    margin-bottom: 1.5vmin !important;
+    transform: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    opacity: 1 !important; 
+  }
+
+  /* 4. Chữ ký cuối thư hiển thị rõ ràng */
   .letter-content .signature {
     font-size: 4vmin !important;
     line-height: 5vmin !important;
     margin-top: 2vmin !important;
   }
 
-  /* 6. Phóng to đĩa nhạc Spotify */
+  /* 5. Phóng to đĩa nhạc Spotify cho dễ bấm */
   .spotify-card {
     width: 55vmin;
   }
 }
-
 /* =========================================
    TẮT ĐƯỜNG KẺ GIẤY TRONG BỨC THƯ
 ========================================= */
