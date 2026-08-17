@@ -120,9 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let wrongCount = 0;       
     let isLocked = false;     
 
-    const CAT_NORMAL = "assets/meo.png";       
-    const CAT_ANGRY  = "assets/meo_angry.png"; 
-    const CAT_SHOCK  = "assets/meo_shock.png"; 
+    const CAT_NORMAL = "assets/meo.webp";       
+    const CAT_ANGRY  = "assets/meo_angry.webp"; 
+    const CAT_SHOCK  = "assets/meo_shock.webp"; 
 
     // === ANIMATION NẢY ĐỒNG BỘ VỚI KHUNG LÚN ===
     let bounceTimeline = null; 
